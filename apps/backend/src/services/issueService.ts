@@ -5,14 +5,14 @@ import { ApiError } from "../utils/apiError";
 import { IssueStatus } from "@myapp/shared";
 import { buildMatchQuery, buildSortPipeline } from "../utils/issueQueryBuilder";
 
-export const getIssuesService = async (filters: QueryFilters) => {
+export const getIssuesService = async (filters: QueryFilters, userId: string) => {
   const { status, priority, search, sortBy = IssueSortOption.RECENT, page = 1, limit = 10 } = filters;
 
   const pageNum = Math.max(1, Number(page));
   const limitNum = Math.min(50, Math.max(1, Number(limit)));
   const skip = (pageNum - 1) * limitNum;
 
-  const matchQuery = buildMatchQuery({ status, priority, search });
+  const matchQuery = buildMatchQuery({ status, priority, search }, userId);
   const sortPipeline = buildSortPipeline(sortBy);
 
   const [issues, total] = await Promise.all([
@@ -33,31 +33,45 @@ export const getIssuesService = async (filters: QueryFilters) => {
   };
 };
 
-export const createIssueService = async (data: CreateIssueRequest) => {
-  const existing = await Issue.findOne({ title: data.title });
+export const createIssueService = async (data: CreateIssueRequest, userId: string) => {
+  const existing = await Issue.findOne({ title: data.title, user: userId });
   if (existing) throw new ApiError(409, "An issue with this title already exists");
-  const newIssue = new Issue(data);
+
+  const { title, description, priority, status, dueDate } = data;
+
+  const newIssue = new Issue({
+    title,
+    description,
+    priority,
+    status,
+    dueDate,
+    user: userId,
+  });
+
   return await newIssue.save();
 };
 
-export const getIssueService = async (id: string) => {
+export const getIssueService = async (id: string, userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid ID format");
   }
 
-  const issue = await Issue.findById(id);
+  const issue = await Issue.findOne({
+    _id: new mongoose.Types.ObjectId(id),
+    user: new mongoose.Types.ObjectId(userId),
+  });
 
   return issue;
 };
 
-export const updateIssueService = async (id: string, data: Partial<CreateIssueRequest>) => {
+export const updateIssueService = async (id: string, data: Partial<CreateIssueRequest>, userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid ID format");
   }
 
   const updated = await Issue.findByIdAndUpdate(
-    id,
-    { $set: data }, // TODO: check the update strategy for additional fields and confirmation dialogues
+    { _id: id, user: userId },
+    { $set: data },
     {
       new: true,
       runValidators: true,
@@ -71,12 +85,12 @@ export const updateIssueService = async (id: string, data: Partial<CreateIssueRe
   return updated;
 };
 
-export const deleteIssueService = async (id: string) => {
+export const deleteIssueService = async (id: string, userId: string) => {
   if (!mongoose.Types.ObjectId.isValid(id)) {
     throw new ApiError(400, "Invalid ID format");
   }
 
-  const issue = await Issue.findByIdAndDelete(id);
+  const issue = await Issue.findByIdAndDelete({ _id: id, owner: userId });
 
   if (!issue) {
     throw new ApiError(404, "Issue not found");
@@ -85,12 +99,12 @@ export const deleteIssueService = async (id: string) => {
   return issue;
 };
 
-export const getIssueStatsService = async () => {
+export const getIssueStatsService = async (userId: string) => {
   const [total, open, inProgress, resolved] = await Promise.all([
-    Issue.countDocuments(),
-    Issue.countDocuments({ status: IssueStatus.OPEN }),
-    Issue.countDocuments({ status: IssueStatus.IN_PROGRESS }),
-    Issue.countDocuments({ status: IssueStatus.RESOLVED }),
+    Issue.countDocuments({ user: userId }),
+    Issue.countDocuments({ user: userId, status: IssueStatus.OPEN }),
+    Issue.countDocuments({ user: userId, status: IssueStatus.IN_PROGRESS }),
+    Issue.countDocuments({ user: userId, status: IssueStatus.RESOLVED }),
   ]);
 
   return { total, open, inProgress, resolved };

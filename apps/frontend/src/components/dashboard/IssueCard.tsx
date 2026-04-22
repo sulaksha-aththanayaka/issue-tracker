@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { IssuePriority, IssueStatus } from "@myapp/shared";
 import { useState } from "react";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "../ui/dropdown-menu";
+import { StatusChangeModal } from "../modals/StatusChangeModal";
 
 interface IssueCardProps {
   data: Issue;
@@ -13,6 +14,7 @@ interface IssueCardProps {
   onEdit: (issue: Issue) => void;
   onDelete: (id: string) => void;
   onStatusChange: (id: string, status: IssueStatus) => void;
+  isUpdating: boolean;
 }
 
 const STATUS_MAP: Record<IssueStatus, { label: string; color: string }> = {
@@ -27,11 +29,13 @@ const PRIORITY_MAP: Record<IssuePriority, { label: string; color: string }> = {
   [IssuePriority.HIGH]: { label: "High", color: "bg-rose-500" },
 };
 
-const IssueCard = ({ data, onView, onEdit, onDelete, onStatusChange }: IssueCardProps) => {
+const IssueCard = ({ data, onView, onEdit, onDelete, onStatusChange, isUpdating }: IssueCardProps) => {
+  const [isStatusModalOpen, setIsStatusModalOpen] = useState(false);
   const [selectedStatus, setSelectedStatus] = useState<IssueStatus | null>(null);
 
   const handleStatusSelect = (status: IssueStatus) => {
     setSelectedStatus(status);
+    setIsStatusModalOpen(true);
   };
 
   const handleConfirm = () => {
@@ -136,31 +140,14 @@ const IssueCard = ({ data, onView, onEdit, onDelete, onStatusChange }: IssueCard
         </div>
       </div>
 
-      {selectedStatus && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
-          <div className="bg-white rounded-[28px] p-6 shadow-2xl max-w-sm w-full mx-4 flex flex-col gap-4">
-            <h2 className="text-lg font-bold text-slate-800">Change Status</h2>
-            <p className="text-slate-500 text-sm">
-              Change status to <span className="font-semibold text-slate-700">{STATUS_MAP[selectedStatus].label}</span>?
-            </p>
-            <div className="flex gap-3 pt-1">
-              <Button
-                variant="outline"
-                className="flex-1 rounded-xl border-slate-200 text-slate-600 cursor-pointer"
-                onClick={() => setSelectedStatus(null)}
-              >
-                Cancel
-              </Button>
-              <Button
-                className="flex-1 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white cursor-pointer"
-                onClick={handleConfirm}
-              >
-                Confirm
-              </Button>
-            </div>
-          </div>
-        </div>
-      )}
+      {/* Confirmation popup */}
+      <StatusChangeModal
+        isOpen={isStatusModalOpen}
+        onClose={() => setIsStatusModalOpen(false)}
+        onConfirm={handleConfirm}
+        newStatus={selectedStatus}
+        isUpdating={isUpdating}
+      />
     </div>
   );
 };

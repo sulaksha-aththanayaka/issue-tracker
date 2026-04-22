@@ -40,7 +40,7 @@ const IssueDashboard = () => {
 
   const { data: fullIssue, isFetching: isFetchingDetail } = useIssueDetail(selectedIssueId);
 
-  const { updateIssueStatus } = useIssueMutations();
+  const { updateIssueStatus, isUpdating } = useIssueMutations();
 
   const handleStatusChange = (id: string, status: IssueStatus) => {
     updateIssueStatus({ id, status }); // ← clean, no type hacks
@@ -68,8 +68,6 @@ const IssueDashboard = () => {
   };
 
   const handleAction = (mode: Mode, issue?: Issue) => {
-    console.log("Issue front: ", issue);
-
     if (issue) setSelectedIssueId(issue._id);
     setModalMode(mode);
     setIsModalOpen(true);
@@ -137,6 +135,7 @@ const IssueDashboard = () => {
           handleAction={handleAction}
           onDelete={handleDelete}
           onStatusChange={handleStatusChange}
+          isUpdating={isUpdating}
         />
 
         {/* Pagination for desktop view */}

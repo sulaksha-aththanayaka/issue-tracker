@@ -1,5 +1,6 @@
 import { IssuePriority, IssueSortOption, IssueStatus } from "@myapp/shared";
 import type { PipelineStage, FilterQuery } from "mongoose";
+import mongoose from "mongoose";
 
 interface IssueQueryFilters {
   status?: IssueStatus | "all";
@@ -7,8 +8,10 @@ interface IssueQueryFilters {
   search?: string;
 }
 
-export const buildMatchQuery = (filters: IssueQueryFilters): FilterQuery<unknown> => {
-  const query: FilterQuery<unknown> = {};
+export const buildMatchQuery = (filters: IssueQueryFilters, userId: string): FilterQuery<unknown> => {
+  const query: FilterQuery<unknown> = {
+    user: new mongoose.Types.ObjectId(userId),
+  };
 
   if (filters.status && filters.status !== "all") {
     query.status = filters.status;

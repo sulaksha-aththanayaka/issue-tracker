@@ -22,8 +22,6 @@ interface IssueModalProps {
 }
 
 const IssueModal = ({ issue, isOpen, isLoading, onClose, onEditClick, mode }: IssueModalProps) => {
-  console.log("issue inside model: ", issue);
-
   const { createIssue, isCreating, updateIssue, isUpdating } = useIssueMutations();
 
   const form = useForm<IssueFormValues>({
@@ -52,7 +50,7 @@ const IssueModal = ({ issue, isOpen, isLoading, onClose, onEditClick, mode }: Is
         form.reset({
           title: "",
           description: "",
-          status: IssueStatus.OPEN, // Set default values to make issue creation easier
+          status: IssueStatus.OPEN,
           priority: IssuePriority.LOW,
           dueDate: "",
         });

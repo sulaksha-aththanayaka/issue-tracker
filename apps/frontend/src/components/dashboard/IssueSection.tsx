@@ -10,9 +10,17 @@ interface IssueSectionProps {
   handleAction: (mode: Mode, issue?: Issue) => void;
   onDelete: (id: string) => void;
   onStatusChange: (id: string, status: IssueStatus) => void;
+  isUpdating: boolean;
 }
 
-const IssueSection = ({ isFetching, issues, handleAction, onDelete, onStatusChange }: IssueSectionProps) => {
+const IssueSection = ({
+  isFetching,
+  issues,
+  handleAction,
+  onDelete,
+  onStatusChange,
+  isUpdating,
+}: IssueSectionProps) => {
   const showUpdatingOverlay = isFetching && issues.length > 0;
 
   return (
@@ -28,6 +36,7 @@ const IssueSection = ({ isFetching, issues, handleAction, onDelete, onStatusChan
                 onEdit={() => handleAction("edit", issue)}
                 onDelete={onDelete}
                 onStatusChange={onStatusChange}
+                isUpdating={isUpdating}
               />
             ))
           : !isFetching && <EmptyState onAdd={() => handleAction("add")} />}

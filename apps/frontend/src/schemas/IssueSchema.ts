@@ -4,7 +4,7 @@ export const issueSchema = z.object({
   title: z.string().min(3, "Title must be at least 3 characters").max(50, "Title must be less than 50 characters"),
   description: z
     .string()
-    .min(10, "Description must be at least 10 characters")
+    .min(5, "Description must be at least 5 characters")
     .max(200, "Description must be less than 200 characters")
     .optional()
     .or(z.literal("")),
@@ -16,7 +16,6 @@ export const issueSchema = z.object({
     .or(z.literal(""))
     .refine(
       (date) => {
-        // If the date is empty or undefined, skip validation (it's valid)
         if (!date) return true;
 
         const selectedDate = new Date(date);

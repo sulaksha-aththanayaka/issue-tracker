@@ -20,14 +20,11 @@ export const issueApi = {
 
   getIssueById: async (id: string) => {
     const { data } = await api.get<ApiResponse<Issue>>(`/issues/${id}`);
-    console.log("fetched issue: ", data);
 
     return data;
   },
 
   create: async (issue: IssueFormValues) => {
-    console.log("issue frontff: ", issue);
-
     const { data } = await api.post<ApiResponse<Issue>>("/issues", issue);
     return data;
   },

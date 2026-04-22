@@ -9,7 +9,7 @@ const issueSchema = new mongoose.Schema(
       maxlength: [100, "Title cannot exceed 100 characters"],
     },
     description: {
-      type: String, // TODO: REFACTOR
+      type: String,
       required: [true, "Description is required"],
     },
     status: {
@@ -26,9 +26,17 @@ const issueSchema = new mongoose.Schema(
       type: Date,
       required: false,
     },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      required: true,
+      index: true,
+    },
   },
   { timestamps: true },
 );
+
+delete mongoose.models.Issue;
 
 const Issue = mongoose.model("Issue", issueSchema);
 

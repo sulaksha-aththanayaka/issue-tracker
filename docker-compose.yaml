@@ -1,0 +1,51 @@
+version: "3.9"
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: issue-tracker-mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db
+    networks:
+      - issue-tracker-network
+
+  backend:
+    build:
+      context: .
+      dockerfile: apps/backend/Dockerfile
+    container_name: issue-tracker-backend
+    ports:
+      - "5000:5000"
+    environment:
+      MONGO_URI: mongodb://mongodb:27017/issue-tracker
+      JWT_SECRET: secret_key_for_jwt_issue_tracker
+      JWT_EXPIRES_IN: 7d
+      CLIENT_URL: http://localhost:5173
+      PORT: 5000
+    depends_on:
+      - mongodb
+    networks:
+      - issue-tracker-network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/frontend/Dockerfile
+    container_name: issue-tracker-frontend
+    ports:
+      - "5173:5173"
+    environment:
+      VITE_API_URL: http://localhost:5000/api
+    depends_on:
+      - backend
+    networks:
+      - issue-tracker-network
+
+volumes:
+  mongo-data:
+
+networks:
+  issue-tracker-network:
+    driver: bridge

@@ -44,7 +44,7 @@ const FilterDropDown = ({ status, priority, sortBy, onFilterChange }: FilterDrop
             <span className="text-xs md:text-sm">{STATUS_LABELS[status]}</span>
           </div>
         </SelectTrigger>
-        <SelectContent sideOffset={4}>
+        <SelectContent alignItemWithTrigger={false} sideOffset={4}>
           <SelectItem value="all">All Statuses</SelectItem>
           <SelectItem value={IssueStatus.OPEN}>Open</SelectItem>
           <SelectItem value={IssueStatus.IN_PROGRESS}>In Progress</SelectItem>
@@ -64,7 +64,7 @@ const FilterDropDown = ({ status, priority, sortBy, onFilterChange }: FilterDrop
             <span className="text-xs md:text-sm">{PRIORITY_LABELS[priority]}</span>
           </div>
         </SelectTrigger>
-        <SelectContent sideOffset={4}>
+        <SelectContent alignItemWithTrigger={false} sideOffset={4}>
           <SelectItem value="all">All Priorities</SelectItem>
           <SelectItem value={IssuePriority.LOW}>Low</SelectItem>
           <SelectItem value={IssuePriority.MEDIUM}>Medium</SelectItem>
@@ -75,7 +75,7 @@ const FilterDropDown = ({ status, priority, sortBy, onFilterChange }: FilterDrop
       <Select
         value={sortBy as string}
         onValueChange={(value) => {
-          if (!value) return; // ← add this null guard
+          if (!value) return;
           onFilterChange("sortBy", value);
         }}
       >
@@ -84,7 +84,7 @@ const FilterDropDown = ({ status, priority, sortBy, onFilterChange }: FilterDrop
             <span className="text-xs md:text-sm">{SORT_LABELS[sortBy]}</span>
           </div>
         </SelectTrigger>
-        <SelectContent sideOffset={4}>
+        <SelectContent alignItemWithTrigger={false} sideOffset={4}>
           <SelectItem value={IssueSortOption.RECENT}>Newest First</SelectItem>
           <SelectItem value={IssueSortOption.OLDEST}>Oldest First</SelectItem>
           <SelectItem value={IssueSortOption.DUE_SOON}>Due Soonest</SelectItem>

@@ -20,7 +20,7 @@ export const exportToCSV = (issues: Issue[]) => {
 
   const rows = issues.map(({ _id, title, description, status, priority, dueDate, createdAt }) => [
     _id,
-    `"${title.replace(/"/g, '""')}"`, // escape quotes in CSV
+    `"${title.replace(/"/g, '""')}"`,
     `"${description.replace(/"/g, '""')}"`,
     status,
     priority,
@@ -39,5 +39,5 @@ const triggerDownload = (blob: Blob, filename: string) => {
   a.href = url;
   a.download = filename;
   a.click();
-  URL.revokeObjectURL(url); // clean up memory
+  URL.revokeObjectURL(url);
 };
