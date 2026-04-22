@@ -17,7 +17,7 @@ import { capitalize } from "@/lib/utils";
 const IssueDashboard = () => {
   const name = useAuthStore((state) => state.name);
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(1);
   const [selectedIssueId, setSelectedIssueId] = useState<string | null>(null);
   const [modalMode, setModalMode] = useState<Mode>("view");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +48,7 @@ const IssueDashboard = () => {
 
   // When search for an issue
   useEffect(() => {
-    setPage(0);
+    setPage(1);
   }, [searchQuery]);
 
   // Scroll to the top
@@ -102,7 +102,7 @@ const IssueDashboard = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-white/50 text-[10px] uppercase tracking-wider font-semibold">Dashboard</span>
-              <span className="text-white text-sm font-medium">Hello, {capitalize(name!)}</span>
+              <span className="text-white text-sm font-medium capitalize">Hello, {name}</span>
             </div>
           </div>
           <LogoutButton />

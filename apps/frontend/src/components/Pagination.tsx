@@ -12,7 +12,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
     <div className="flex items-center justify-center gap-2 sm:gap-3 md:gap-6 py-10">
       <Button
         variant="outline"
-        disabled={currentPage === 0}
+        disabled={currentPage === 1}
         onClick={() => onPageChange(currentPage - 1)}
         className="rounded-full !px-2 md:px-3 gap-0 md:gap-2 h-11 bg-white border-slate-200 text-slate-600 cursor-pointer disabled:!cursor-not-allowed hover:bg-slate-50 hover:text-indigo-600 disabled:text-slate-600 transition-all disabled:opacity-50 shadow-sm active:scale-95"
       >
@@ -28,7 +28,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 
       <Button
         variant="outline"
-        disabled={currentPage >= totalPages - 1}
+        disabled={currentPage >= totalPages}
         onClick={() => onPageChange(currentPage + 1)}
         className="rounded-full px-2 md:px-3 gap-0 md:gap-2 h-11 bg-white border-slate-200 text-slate-600 cursor-pointer disabled:!cursor-not-allowed hover:bg-slate-50 hover:text-indigo-600 disabled:text-slate-600 transition-all disabled:opacity-50 shadow-sm active:scale-95"
       >
