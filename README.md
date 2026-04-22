@@ -26,7 +26,7 @@ git checkout main
 Run the following command in the root directory:
 
 ```bash
-docker-compose up -d
+docker-compose up --build
 ```
 
 ### 4. Access the Application
