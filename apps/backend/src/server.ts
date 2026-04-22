@@ -1,11 +1,11 @@
+import "./config/env";
 import express from "express";
-import issueRouter from "./routes/issueRoutes";
-import dotenv from "dotenv";
+import issueRoutes from "./routes/issueRoutes";
 import { connectDB } from "./config/db";
 import { errorHandler } from "./middlewares/errorHanlder";
 import cors from "cors";
-
-dotenv.config();
+import authRoutes from "./routes/authRoutes";
+import { authenticate } from "./middlewares/authenticate";
 
 const app = express();
 
@@ -22,7 +22,8 @@ app.use(express.json());
 
 connectDB();
 
-app.use("/api/issues", issueRouter);
+app.use("/api/auth", authRoutes);
+app.use("/api/issues", authenticate, issueRoutes);
 
 app.use((req, res) => {
   res.status(404).json({ success: false, message: "Route not found" });

@@ -45,9 +45,7 @@ const IssueModal = ({ issue, isOpen, isLoading, onClose, onEditClick, mode }: Is
           description: issue.description || "",
           status: issue.status || "",
           priority: issue.priority || "",
-          dueDate: issue.dueDate
-            ? new Date(issue.dueDate).toISOString().split("T")[0] // "2026-04-30T00:00:00.000Z" → "2026-04-30"
-            : "",
+          dueDate: issue.dueDate ? new Date(issue.dueDate).toISOString().split("T")[0] : "",
         });
       } else if (mode === "add") {
         // Reset to empty for add mode

@@ -74,7 +74,7 @@ const IssueCard = ({ data, onView, onEdit, onDelete, onStatusChange }: IssueCard
               <Button
                 variant="ghost"
                 size="icon"
-                className="h-6 w-6 rounded-full hover:bg-white/20 text-black rotate-90 justify-start"
+                className="h-6 w-6 rounded-full hover:bg-black/20 text-black rotate-90 justify-start hover:opacity-70 cursor-pointer"
               >
                 <MoreHorizontal className="h-3.5 w-3.5" />
               </Button>
@@ -101,12 +101,14 @@ const IssueCard = ({ data, onView, onEdit, onDelete, onStatusChange }: IssueCard
 
       {/* Due date, created date and actions */}
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2 text-slate-500 font-semibold">
-          <Calendar className="h-3.5 w-3.5 md:h-5 md:w-5" />
-          <span className="text-sm md:text-base">Due: {data.dueDate}</span>
-        </div>
+        {data.dueDate && (
+          <div className="flex items-center gap-2 text-slate-500 font-semibold">
+            <Calendar className="h-3.5 w-3.5 md:h-5 md:w-5" />
+            <span className="text-sm md:text-base">Due: {new Date(data.dueDate).toISOString().split("T")[0]}</span>
+          </div>
+        )}
 
-        <div className="flex gap-2">
+        <div className="flex gap-2 ml-auto">
           <Button
             variant="secondary"
             size="icon"

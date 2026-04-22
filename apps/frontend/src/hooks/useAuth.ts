@@ -3,6 +3,7 @@ import api from "@/lib/axios";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
+import { capitalize } from "@/lib/utils";
 
 export const useAuth = () => {
   const setAuth = useAuthStore((state) => state.setAuth);
@@ -13,12 +14,12 @@ export const useAuth = () => {
   const loginMutation = useMutation({
     mutationFn: async (credentials: { email: string; password: string }) => {
       const { data } = await api.post("/auth/login", credentials);
-      return data;
+      return data.data as { token: string; user: { name: string; email: string } };
     },
     onSuccess: (data) => {
       queryClient.clear();
-      setAuth(data.token, data.email, data.name);
-      toast.success(`Welcome back, ${data.name}!`, {
+      setAuth(data.token, data.user.email, data.user.name);
+      toast.success(`Welcome back, ${capitalize(data.user.name)}!`, {
         description: "You have successfully signed in.",
       });
       navigate("/dashboard");
@@ -35,12 +36,12 @@ export const useAuth = () => {
   const registerMutation = useMutation({
     mutationFn: async (credentials: { name: string; email: string; password: string }) => {
       const { data } = await api.post("/auth/register", credentials);
-      return data;
+      return data.data as { token: string; user: { name: string; email: string } };
     },
     onSuccess: (data) => {
       queryClient.clear();
-      setAuth(data.token, data.email, data.name);
-      toast.success("Account created!", {
+      setAuth(data.token, data.user.email, data.user.name);
+      toast.success(`Welcome, ${capitalize(data.user.name)}!`, {
         description: "Welcome to Issue Tracker.",
       });
       navigate("/dashboard");

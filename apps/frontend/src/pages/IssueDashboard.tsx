@@ -12,6 +12,7 @@ import { DeleteModal } from "@/components/modals/DeleteModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { IssueSortOption, type IssuePriority, type IssueStatus } from "@myapp/shared";
+import { capitalize } from "@/lib/utils";
 
 const IssueDashboard = () => {
   const name = useAuthStore((state) => state.name);
@@ -74,12 +75,6 @@ const IssueDashboard = () => {
     setIsModalOpen(true);
   };
 
-  // const handleCloseModal = () => {
-  //   setIsModalOpen(false);
-  //   setIsDeleteModalOpen(false);
-  //   setSelectedIssueId(null);
-  // };
-
   const handleCloseModal = () => {
     setIsModalOpen(false);
     setTimeout(() => setSelectedIssueId(null), 300);
@@ -109,7 +104,7 @@ const IssueDashboard = () => {
             </div>
             <div className="flex flex-col">
               <span className="text-white/50 text-[10px] uppercase tracking-wider font-semibold">Dashboard</span>
-              <span className="text-white text-sm font-medium">Hello, {name}</span>
+              <span className="text-white text-sm font-medium">Hello, {capitalize(name!)}</span>
             </div>
           </div>
           <LogoutButton />
@@ -132,6 +127,7 @@ const IssueDashboard = () => {
           sortBy={sortBy}
           onFilterChange={handleFilterChange}
           onView={() => handleAction("add")}
+          issues={issues}
         />
 
         {/* Issues section */}

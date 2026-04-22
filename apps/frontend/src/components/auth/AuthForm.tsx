@@ -81,7 +81,7 @@ export const AuthForm = ({ type, onSubmit, isLoading }: AuthFormProps) => {
               {...register("password")}
               type={showPassword ? "text" : "password"}
               className="pl-11 text-sm md:text-base pr-11 rounded-2xl bg-slate-100/50 border-slate-200/60 h-12 focus-visible:ring-indigo-500/30 focus-visible:border-indigo-500 transition-all"
-              placeholder="••••••••"
+              placeholder="••••••"
             />
             <button
               type="button"

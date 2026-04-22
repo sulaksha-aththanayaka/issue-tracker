@@ -8,7 +8,7 @@ interface SearchBarProps {
 
 const SearchBar = ({ value, onChange }: SearchBarProps) => {
   return (
-    <div className="relative w-full md:max-w-sm flex items-center">
+    <div className="relative w-full lg:max-w-sm flex items-center">
       <Search className="absolute left-3 h-4 w-4 text-muted-foreground pointer-events-none" />
       <Input
         placeholder="Search by issue name..."
