@@ -22,7 +22,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
 
       <div className="flex items-center gap-2">
         <span className="text-slate-400 text-sm md:text-base font-medium">Page</span>
-        <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg font-bold text-sm">{currentPage + 1}</span>
+        <span className="bg-indigo-100 text-indigo-700 px-3 py-1 rounded-lg font-bold text-sm">{currentPage}</span>
         <span className="text-slate-400 text-sm md:text-base font-medium">of {totalPages}</span>
       </div>
 
