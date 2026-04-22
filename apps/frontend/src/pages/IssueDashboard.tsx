@@ -12,7 +12,6 @@ import { DeleteModal } from "@/components/modals/DeleteModal";
 import { useAuthStore } from "@/store/useAuthStore";
 import LogoutButton from "@/components/auth/LogoutButton";
 import { IssueSortOption, type IssuePriority, type IssueStatus } from "@myapp/shared";
-import { capitalize } from "@/lib/utils";
 
 const IssueDashboard = () => {
   const name = useAuthStore((state) => state.name);
